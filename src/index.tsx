@@ -11,7 +11,6 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import { createFirestoreInstance } from 'redux-firestore';
 import thunk from 'redux-thunk';
 import App from './App';
-// import { isLoaded } from 'react-redux-firebase'
 import { fbConfig, reduxFirebase } from './config/firebase.config';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -25,17 +24,20 @@ const store = createStore(
 );
 
 firebase.initializeApp(fbConfig);
+firebase.firestore()
+firebase.auth()
 
-
+const rrfProps = {
+  firebase,
+  config: reduxFirebase,
+  dispatch: store.dispatch,
+  createFirestoreInstance, //since we are using Firestore
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ReactReduxFirebaseProvider
-        firebase={firebase}
-        config={reduxFirebase}
-        dispatch={store.dispatch}
-        createFirestoreInstance={createFirestoreInstance}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
         <App />
       </ReactReduxFirebaseProvider>
     </Provider>

@@ -1,17 +1,23 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
+import { getFirebase } from 'react-redux-firebase';
 
 
 export interface SignUpProps {
 
 }
 
-const SignUp: React.FC<SignUpProps> = () => {
+const SignUp: React.FC<SignUpProps> = (props) => {
+    console.log("props", props)
 
     const { register, handleSubmit, watch, errors } = useForm();
+    const firebase = getFirebase();
 
-    const onSignUpSubmit = (data: any) => {
+    const onSignUpSubmit = async(data: any) => {
         console.log("data sub", data);
+        const datafire = await firebase.auth().createUserWithEmailAndPassword(data.email , data.password)
+        console.log("onSignUpSubmit -> datafire", datafire)
+        // firebase.createUser(data)
     }
 
     return (
